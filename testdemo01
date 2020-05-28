@@ -1,0 +1,4 @@
+---
+- hosts: window_db_test
+  roles:
+    - {role: DB_SQL}
