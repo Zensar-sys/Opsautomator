@@ -1,0 +1,56 @@
+{   
+    "Parameters":{   
+       "BucketName":{   
+          "Description":"Enter a the S3  Name", 
+          "Type":"String" 
+       },
+       "SecurityGroupIds":{   
+          "Description":"Security groups that can be used to access the EC2 Resourse", 
+          "Type":"List<AWS::EC2::SecurityGroup::Id>", 
+          "ConstraintDescription":"must be list of EC2 security group ids" 
+       }, 
+       "KeyName":{   
+          "Description":"EC2 Key Pair for SSH Access", 
+          "Type":"AWS::EC2::KeyPair::KeyName" 
+       }, 
+       "InstanceType":{   
+          "Description":"Instance1 EC2 instance type", 
+          "Type":"String", 
+          "Default":"t2.micro", 
+          "AllowedValues":[   
+             "t2.micro", 
+             "t2.small" 
+          ] 
+       }
+
+       
+    },
+
+    "Resources":{   
+       "EC2Machine":{   
+          "Type":"AWS::EC2::Instance", 
+          "Properties":{   
+             "ImageId":"ami-d783a9b8", 
+             "InstanceType":{   
+                "Ref":"InstanceType" 
+             }, 
+             "KeyName":{   
+                "Ref":"KeyName" 
+             }, 
+             "SecurityGroupIds":{   
+                "Ref":"SecurityGroupIds" 
+             }
+             
+          } 
+       },
+       "S3Bucket":{  
+                     "Type":"AWS::S3::Bucket", 
+          "Properties":{   
+             "BucketName":{   
+                "Ref":"BucketName" 
+             } 
+          } 
+       }  
+       
+    } 
+ } 
