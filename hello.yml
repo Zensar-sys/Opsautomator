@@ -1,8 +1,6 @@
 ---
 - name: Hello World!
-  hosts: localhost
  
-  tasks:
+  tasks:	
+    - debug: msg =”Hello from ansible”
  
-  - name: Hello World!
-    shell: echo "Hi! Tower is working."
