@@ -1,6 +1,6 @@
 ---
 - name: Hello World!
- 
+  hosts: localhost
   tasks:	
-    - debug: msg =”Hello from ansible”
+    - debug: msg=”Hello from ansible”
  
