@@ -1,7 +1,7 @@
 --- 
-- 
+- name: "Hello World!"
   hosts: hosts
-  name: "Hello World!"
+  
   tasks: 
     - 
       debug: 
