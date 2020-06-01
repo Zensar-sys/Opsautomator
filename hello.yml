@@ -1,6 +1,7 @@
 --- 
 - name: "Hello World!"
   hosts: localhost
+  connection: local
   
   tasks: 
     - 
