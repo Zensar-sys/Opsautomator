@@ -1,0 +1,52 @@
+---
+- connection: local
+  hosts: localhost
+
+  vars:
+      todays_date: "{{ ansible_date_time.date }}"
+
+  name: "Delete IAM user with keys"
+  tasks:
+
+    - debug:
+        msg: "{{ todays_date }}"
+
+    - name: "Get all the users"
+      shell: "aws iam list-users --output text --query 'Users[*].[UserName]'"
+      register: username
+
+      #- debug:
+      # msg: "{{ username }}"
+
+    - name: "Get all the access keys"
+      shell: "aws iam list-access-keys --user-name {{ item }} --query 'AccessKeyMetadata[0].AccessKeyId' --output text"
+      with_items: "{{ username.stdout_lines }}"
+      register: access_keys
+
+      #- debug:
+      # msg: "{{ access_keys }}"
+
+    - name: "Last_activity of user"
+      shell: "aws iam get-access-key-last-used --access-key-id {{ item }} --query 'AccessKeyLastUsed.[LastUsedDate]' --output text"
+      with_items: "{{ access_keys | json_query('results[*].stdout') }}"
+register: last_used
+
+      #- debug:
+      # msg: "{{ last_used | json_query('results[*].stdout') }}"
+
+    - name: "timestamp into date"
+      shell: "date -d {{ item }} +'%Y-%m-%d'"
+      with_items: "{{ last_used | json_query('results[*].stdout') }}"
+      register: last_used_date
+
+    - name: "date-difference"
+      #      shell: /bin/sh -ilc "$(($(($(date -d {{ todays_date }} +%s) - $(date -d {{ item }} +%s))) / 86400))"
+      shell: "{{ item }}"
+      with_items:
+         - source ~/.bashrc
+         - $(($(($(date -d {{ todays_date }} +%s) - $(date -d {{ item }} +%s))) / 86400))
+      with_items: "{{ last_used_date | json_query('results[*].stdout') }}"
+      register: datediff
+
+    - debug:
+        msg: "{{ datediff }} "
