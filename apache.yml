@@ -1,0 +1,16 @@
+---
+- name: This sets up an httpd webserver
+  hosts: myhost
+  #  sudo: yes
+  become: yes
+  become_user: root
+  tasks:
+  - name: Install apache packages 
+    yum:
+      name: httpd
+      state: present
+  - name: ensure httpd is running
+    service:
+      name: httpd 
+      state: started
+ 

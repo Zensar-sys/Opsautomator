@@ -1,0 +1,15 @@
+- name: Format instance selection tags for ec2_remote_facts
+  shell: |
+      import boto3
+      python /etc/ansible/roles/scheduling/files/build_tags_dict.py "{{instances.tags}}"
+
+  register: ec2_remote_tags
+
+- name: Get instance_ids
+  ec2_instance_info:
+    filters: 
+      instance-state-name: [ "shutting-down", "stopping", "stopped","running" ]
+  register: instances_details
+
+- debug:
+    msg: "{{ instances_details }}"

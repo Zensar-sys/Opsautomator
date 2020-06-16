@@ -1,0 +1,7 @@
+---
+
+# vars file for scheduling
+instances:
+  tags:
+    env: 'prod'
+  elastic_ip: "yes"

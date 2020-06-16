@@ -1,0 +1,6 @@
+---
+# defaults file for scheduling
+action: "start"
+reuse_existing_ip_allowed: yes
+release_on_disassociation: yes
+roles_directory: roles

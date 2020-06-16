@@ -1,0 +1,33 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    region: ap-south-1
+    ins_name: prod
+
+  tasks:
+    - name: To Get Instance Id
+      command: "aws ec2 describe-instances
+                --filters Name=tag:env,Values={{ ins_name }}
+                --query 'Reservations[0].Instances[0].InstanceId'
+                --output text 
+                --region ap-south-1"
+      register: instanceid
+
+    - debug:
+        msg: "{{ instanceid.stdout }} "
+      register: instances
+
+    - name: To Create AMI
+      ec2_ami:
+        region: "{{region}}"
+        instance_id: "{{ item }}"
+        name: "image-{{ item }}"
+      with_items: "{{ instances.msg }}"
+      register: aws_amis
+
+    - debug:
+        msg: "{{ aws_amis }} "
+
+
+

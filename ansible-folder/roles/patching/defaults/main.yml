@@ -1,0 +1,8 @@
+---
+# defaults file for patching
+patch_display_patch_output: True
+patch_reboot_message: "Rebooting due to patching."
+patch_pkgs:
+  - "*"
+patch_never_reboot: True
+patch_never_restart_svc: True

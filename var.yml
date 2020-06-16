@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Execute shell command
+      shell: uname
+    - debug: msg="Hello from Shell"

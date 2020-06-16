@@ -1,0 +1,48 @@
+---
+- name: Check EC2 instances tags
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  
+  vars:
+    aws_region: "ap-south-1"
+    ec2_tags:
+      Name: 'Master3'
+      
+  tasks:
+    - debug:
+        msg: "{{ ec2_tags }} "
+    - name: Instance list      
+      ec2_instance_info:
+        region: "{{ aws_region }}"
+        filters:
+          instance-state-name: [ "shutting-down", "stopping", "stopped","running" ]
+      register: ec2_list
+
+    - debug:
+        msg: "{{ ec2_list }}"
+
+    - name: Filter EC2 instances
+      set_fact:
+        ec2_instances: |
+          {% set instances = [] -%}
+          {% set tags = {} -%}
+          {% set req_tags = {"Name": "Master3"} -%}
+          {% set test = 'hello' -%}
+            {% for item in ec2_list.instances  -%}
+              {% set tags = item.tags %}
+               {% for k,v in tags.iteritems() %}
+                 {{ tags.__setitem__(k,v) }}
+               {% endfor %}
+               {% if 'prod' not in tags.values() %}
+                 {{ instances.append(item.instance_id) }}
+               {% endif %}            
+            {%- endfor %}
+            
+          {{ instances }}  
+          
+
+
+    - debug:
+        msg: "{{ item }}"
+      with_items: "{{ ec2_instances }}"

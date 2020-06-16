@@ -1,0 +1,5 @@
+plugin: azure_rm
+include_vm_resource_groups:
+  - Test-Resource-Group
+auth_source: auto
+

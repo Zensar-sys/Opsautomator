@@ -1,0 +1,64 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    region: ap-south-1
+    ins_name: prod
+
+  tasks:
+    - name: To Get Instance Id
+      command: "aws ec2 describe-instances
+                --filters Name=tag:env,Values={{ ins_name }}
+                --query 'Reservations[0].Instances[0].InstanceId'
+                --output text
+                --region ap-south-1"
+      register: instanceid
+
+    - debug:
+        msg: "{{ instanceid.stdout }} "
+      register: instances
+
+    - name: To Create AMI
+      ec2_ami:
+        region: "{{region}}"
+        instance_id: "{{ item }}"
+        name: "image-{{ item }}"
+      with_items: "{{ instances.msg }}"
+      register: aws_amis
+	  
+	- debug:
+        msg: "{{ aws_amis }} "
+
+----------------------------------------
+history
+pip3 install azure
+    2  sudo apt install python3-pip
+    3  python --version
+    4  sudo apt install python-pip
+    5  pip install msrestazure
+    6  sudo apt install python-pip
+    7  sudo apt install python3-pip
+    8  sudo apt install python-pip
+    9  sudo apt-get install python3.6
+   10  sudo apt autoremove
+   11  python --version
+   12  python3
+   13  sudo apt update
+   14  sudo apt install python3-pip
+   15  pip install msrestazure
+   16  sudo pip install msrestazure
+pip3 --verion
+   18  sudo apt install python3-pip
+   19  pip --version
+   20  pip3 --version
+   21  pip install msrestazure
+   22  sudo pip install msrestazure
+   23  sudo pip3 install msrestazure
+   24  pip3 install "azure==2.0.0rc5"
+   25  pip install ansible[azure]
+   26  pip3 install ansible[azure]
+   27  sudo pi3p install cryptography -U
+   28  sudo pip3 install cryptography -U
+   29  pip install msrestazure~=0.4.32 azure-cli
+   30  sudo pip3 install msrestazure~=0.4.32 azure-cli
+   31  history

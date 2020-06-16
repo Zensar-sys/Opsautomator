@@ -1,0 +1,3 @@
+---
+# vars file for patching
+#rhsa_to_install = RHSA-2020:2242
