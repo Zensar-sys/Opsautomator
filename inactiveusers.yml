@@ -29,7 +29,7 @@
     - name: "Last_activity of user"
       shell: "aws iam get-access-key-last-used --access-key-id {{ item }} --query 'AccessKeyLastUsed.[LastUsedDate]' --output text"
       with_items: "{{ access_keys | json_query('results[*].stdout') }}"
-register: last_used
+      register: last_used
 
       #- debug:
       # msg: "{{ last_used | json_query('results[*].stdout') }}"
@@ -40,11 +40,11 @@ register: last_used
       register: last_used_date
 
     - name: "date-difference"
-      #      shell: /bin/sh -ilc "$(($(($(date -d {{ todays_date }} +%s) - $(date -d {{ item }} +%s))) / 86400))"
-      shell: "{{ item }}"
-      with_items:
-         - source ~/.bashrc
-         - $(($(($(date -d {{ todays_date }} +%s) - $(date -d {{ item }} +%s))) / 86400))
+      shell: /bin/sh -ilc "$(($(($(date -d {{ todays_date }} +%s) - $(date -d {{ item }} +%s))) / 86400))"
+      #shell: "{{ item }}"
+      #with_items:
+       #  - source ~/.bashrc
+        # - $(($(($(date -d {{ todays_date }} +%s) - $(date -d {{ item }} +%s))) / 86400))
       with_items: "{{ last_used_date | json_query('results[*].stdout') }}"
       register: datediff
 
