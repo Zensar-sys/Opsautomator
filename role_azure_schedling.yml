@@ -1,4 +1,6 @@
 ---
 - hosts: all
+  vars:
+     resgroup: 'Test-Resource-Group'
   roles:
     - /etc/ansible/roles/scheduling-azure
