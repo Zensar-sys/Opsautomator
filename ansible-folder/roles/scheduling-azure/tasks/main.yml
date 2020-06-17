@@ -14,6 +14,6 @@
 
 - name: Start VM 
   azure_rm_virtualmachine:
-    resource_group: "{{ resource_group }}"
+    resource_group: "{{ resgroup }}"
     name: "{{ vm_facts }}"
     started: yes
