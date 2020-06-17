@@ -3,4 +3,4 @@
   vars:
      resgroup: 'Test-Resource-Group'
   roles:
-    - /etc/ansible/roles/scheduling-azure
+    - ansible-folder/roles/scheduling-azure
