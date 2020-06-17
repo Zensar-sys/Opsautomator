@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: 40.87.107.19
   vars:
      resgroup: 'Test-Resource-Group'
   roles:
