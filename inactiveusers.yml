@@ -40,13 +40,25 @@
       register: last_used_date
 
     - name: "date-difference"
-      shell: /bin/sh -ilc "$(($(($(date -d {{ todays_date }} +%s) - $(date -d {{ item }} +%s))) / 86400))"
-      #shell: "{{ item }}"
-      #with_items:
-       #  - source ~/.bashrc
-        # - $(($(($(date -d {{ todays_date }} +%s) - $(date -d {{ item }} +%s))) / 86400))
+      shell: "echo $(($(($(date -d {{ todays_date }} +%s) - $(date -d {{ item }} +%s))) / 86400))"
       with_items: "{{ last_used_date | json_query('results[*].stdout') }}"
       register: datediff
 
     - debug:
-        msg: "{{ datediff }} "
+        msg: "{{ datediff | json_query('results[*].stdout') }}"
+
+    - name: "users attached policies"
+      shell: "aws iam list-attached-user-policies --user-name {{ item }} --query 'AttachedPolicies[*].PolicyArn' --output text"
+      with_items: "{{ username.stdout_lines }}"
+      register: policies
+
+    - debug:
+         msg: "{{ policies | json_query('results[*].stdout') }}"
+
+    - name: "delete inactive users"
+      shell: "aws iam delete-user --user-name {{ item }}"
+      when: (datediff | json_query('results[*].stdout')) > 90
+      # shell: "aws iam delete-login-profile --user-name {{ item }}"
+      shell: "aws iam detach-user-policy --user-name {{ item }} --policy-arn |aws iam list-attached-user-policies --user-name {{ item }} --query 'AttachedPolicies[*].PolicyArn' --output text"
+      with_items: "{{ username.stdout_lines }}"
+
