@@ -1,5 +1,6 @@
 ---
 - hosts: localhost
+  connection: local
   vars:
      resgroup: 'Test-Resource-Group'
   roles:
