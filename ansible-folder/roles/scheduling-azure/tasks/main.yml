@@ -2,8 +2,7 @@
 # tasks file for scheduling-azure
 
 - name: Query Azure for VM data
-  azure_rm_virtualmachine_facts:
-    name: "{{ inventory_hostname }}"
+  azure_rm_virtualmachine_info:
     resource_group: "{{ resgroup }}"
   delegate_to: localhost
   register: vm_facts
