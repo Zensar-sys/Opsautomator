@@ -2,6 +2,6 @@
 - hosts: localhost
   connection: local
   vars:
-     resgroup: 'Test-Resource-Group'
+     resgroup: 'Test-Resouce-Group'
   roles:
     - ansible-folder/roles/scheduling-azure
