@@ -6,8 +6,6 @@
 
     - name: Get instance data
       ec2_instance_info:
-        filters:
-          availability-zone: ap-south-1b
       register: instance_data
 
     - name: Retrieve all tags on an instance
