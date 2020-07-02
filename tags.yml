@@ -7,8 +7,7 @@
     - name: Get instance data
       ec2_instance_info:
         filters:
-          instance-state-name: [ "shutting-down", "stopping", "stopped","running" ]
-          region: ap-south-1
+          availability-zone: ap-south-1b
       register: instance_data
 
     - name: Retrieve all tags on an instance
